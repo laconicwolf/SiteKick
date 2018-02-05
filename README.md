@@ -10,41 +10,19 @@ Sitekick is a tool developed to enumerate websites. It takes a text file contain
   
   -p, --print_all       display scan information to the screen
   
-  -snt, --screenshot_no_title
-  
-                        Takes a screenshot if no title is found
+  -snt, --screenshot_no_title       Takes a screenshot if no title is found
                         
-  -d [{common,file}], --dirbust [{common,file}]
-  
-                        Attempts to dirbust common or file-specified
+  -d [{common,file}], --dirbust [{common,file}]       Attempts to dirbust common or file-specified directories
                         
-                        directories
+  -df DIRBUST_FILE, --dirbust_file DIRBUST_FILE       Specify text file containing directories to test, one directory per line.
                         
-  -df DIRBUST_FILE, --dirbust_file DIRBUST_FILE
-  
-                        Specify text file containing directories to test, one
+  -pr PROXY, --proxy PROXY       specify a proxy to use (-pr 127.0.0.1:8080)
                         
-                        directory per line.
+  -csv [CSV], --csv [CSV]       specify the name of a csv file to write to. If the file already exists it will be appended
                         
-  -pr PROXY, --proxy PROXY
-  
-                        specify a proxy to use (-pr 127.0.0.1:8080)
+  -uf URL_FILE, --url_file URL_FILE       specify a file containing urls formatted http(s)://addr:port.
                         
-  -csv [CSV], --csv [CSV]
-  
-                        specify the name of a csv file to write to. If the
-                        
-                        file already exists it will be appended
-                        
-  -uf URL_FILE, --url_file URL_FILE
-  
-                        specify a file containing urls formatted
-                        
-                        http(s)://addr:port.
-                        
-  -t [THREADS], --threads [THREADS]
-  
-                        specify number of threads (default=1)`
+  -t [THREADS], --threads [THREADS]       specify number of threads (default=1)`
                         
 
 ### Scan a list of URLs and output to a CSV file
