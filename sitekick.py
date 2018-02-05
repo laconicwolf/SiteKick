@@ -229,7 +229,7 @@ if __name__ == '__main__':
     parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     parser.add_argument("-p", "--print_all", help="display scan information to the screen", action="store_true")
     parser.add_argument("-snt", "--screenshot_no_title", help="Takes a screenshot if no title is found", action="store_true")
-    parser.add_argument("-d", "--dirbust", default='common', const='common', nargs='?', choices=['common', 'file'], help="Attempts to dirbust common or file-specified directories")
+    parser.add_argument("-d", "--dirbust", choices=['common', 'file'], help="Attempts to dirbust common or file-specified directories")
     parser.add_argument("-df", "--dirbust_file", help="Specify text file containing directories to test, one directory per line.")
     #parser.add_argument("-s", "--screenshot", help="Takes a screenshot of each page", action="store_true")
     parser.add_argument("-pr", "--proxy", help="specify a proxy to use (-pr 127.0.0.1:8080)")
