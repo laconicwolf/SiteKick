@@ -63,7 +63,8 @@ http://10.1.1.1:591
 http://10.1.1.1:593
 http://10.1.1.1:2080
 http://10.1.1.1:2480
-```...
+...
+```
 
 ### Generate a list of URLs for a hosts specified in a local file
 `python3 web_addr_generator.py -i hosts.txt`
