@@ -50,12 +50,19 @@ This script requires many non-standard libraries, which should all be available 
 > Will generate URLs for 10.1.1.0/24 range. Each host will have ~45 URLs (1 for each common web port)
 > Example:
 `python3 web_addr_generator.py -r 10.1.1.0/24
+
 http://10.1.1.1:80
+
 http://10.1.1.1:280
+
 http://10.1.1.1:81
+
 http://10.1.1.1:591
+
 http://10.1.1.1:593
+
 http://10.1.1.1:2080
+
 http://10.1.1.1:2480
 `...
 
