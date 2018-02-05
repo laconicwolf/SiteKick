@@ -1,4 +1,4 @@
-# Site-Kick
+# SiteKick.py
 Sitekick is a tool developed to enumerate websites. It takes a text file containing URLs (http(s)://ipaddr:port) as input, and will send a web request (via Python requests) to each URL and will record the URL it was redirected to (if redirected), the website Title (if <title></title> tags are present), and Server type (if a server header is present). If the title tag is not present, sitekick will use PhantomJS to launch a silent browser and browse to the site, as occasionally titles are generated only when JavaScript is detected. This redirect, title, and server information is either output to the terminal or a CSV file (or both). Additionally, sitekick can perform dirbusting if specified, and the directories will either be defined within the script, or a local file containing directories can be specified.
 
 ## Usage
