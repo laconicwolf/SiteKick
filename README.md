@@ -51,8 +51,7 @@ optional arguments:
 ## Usage for web_addr_generator.py
 
 ### Generate a list of URLs for a specific network range
-> Will generate URLs for 10.1.1.0/24 range. Each host will have ~45 URLs (1 for each common web port)
-> Example:
+> Will generate URLs for 10.1.1.0/24 range. Each host will have ~45 URLs (1 for each common web port). Example:
 
 ```
 python3 web_addr_generator.py -r 10.1.1.0/24
