@@ -3,8 +3,11 @@ Sitekick is a tool developed to enumerate websites. It takes a text file contain
 
 ## Usage
 `optional arguments:
+
   -h, --help            show this help message and exit
+  
   -v, --verbose         increase output verbosity
+  
   -p, --print_all       display scan information to the screen
   -snt, --screenshot_no_title
                         Takes a screenshot if no title is found
@@ -33,6 +36,7 @@ Sitekick is a tool developed to enumerate websites. It takes a text file contain
 
 ### Scan a list of URLs and perform dirbusting of a few directories, printing to the terminal and a CSV file
 > Directories defined in the directories() function within the script
+
 `python3 sitekick.py -uf urls.txt -d common -p -csv sitekick_scan.csv`
 
 ### Scan a list of URLs and perform dirbusting of a directories specified in a local file, printing to the terminal
