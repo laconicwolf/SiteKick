@@ -9,24 +9,43 @@ Sitekick is a tool developed to enumerate websites. It takes a text file contain
   -v, --verbose         increase output verbosity
   
   -p, --print_all       display scan information to the screen
+  
   -snt, --screenshot_no_title
+  
                         Takes a screenshot if no title is found
+                        
   -d [{common,file}], --dirbust [{common,file}]
+  
                         Attempts to dirbust common or file-specified
+                        
                         directories
+                        
   -df DIRBUST_FILE, --dirbust_file DIRBUST_FILE
+  
                         Specify text file containing directories to test, one
+                        
                         directory per line.
+                        
   -pr PROXY, --proxy PROXY
+  
                         specify a proxy to use (-pr 127.0.0.1:8080)
+                        
   -csv [CSV], --csv [CSV]
+  
                         specify the name of a csv file to write to. If the
+                        
                         file already exists it will be appended
+                        
   -uf URL_FILE, --url_file URL_FILE
+  
                         specify a file containing urls formatted
+                        
                         http(s)://addr:port.
+                        
   -t [THREADS], --threads [THREADS]
+  
                         specify number of threads (default=1)`
+                        
 
 ### Scan a list of URLs and output to a CSV file
 `python3 sitekick.py -uf urls.txt -csv sitekick_scan.csv`
