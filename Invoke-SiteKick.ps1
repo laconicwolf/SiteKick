@@ -185,7 +185,8 @@ add-type @"
     return $SiteData
     }
 
-    #create the pool where the threads will launch
+    # concepts adapted from: https://www.codeproject.com/Tips/895840/Multi-Threaded-PowerShell-Cookbook
+    # create the pool where the threads will launch
     $RunspacePool = [RunspaceFactory]::CreateRunspacePool(1, $Threads)
     $RunspacePool.Open()
 
