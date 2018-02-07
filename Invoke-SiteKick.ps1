@@ -228,5 +228,7 @@ add-type @"
         }
     }
 
-    Write-Host "`n[+] File has been written to $CSV`n"
+    if ($CSV) {
+        Write-Host "`n[+] File has been written to $CSV`n"
+    }
 }
