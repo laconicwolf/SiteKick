@@ -95,7 +95,6 @@ add-type @"
     }
 "@
 [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
-
     
     Function _Get-RandomAgent {
         <#
@@ -191,7 +190,6 @@ add-type @"
     $RunspacePool.Open()
 
     $Jobs = @()
-
 
     ForEach ($URL in $URLs) {
         
