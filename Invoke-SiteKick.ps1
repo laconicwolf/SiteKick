@@ -9,7 +9,8 @@ Function Invoke-SiteKick {
         Reads a text file of URLs (one per line) and uses Invoke-WebRequests to 
         attempt to visit the each URL. Returns information regarding any
         redirect, the site Title (if <title> tags are present), and Server type
-        (if the server header is present). Can be output to a CSV file.  
+        (if the server header is present). For multiple hosts, I recommend using
+        Export-Csv to save the data.  
          
     .PARAMETER UrlFile
         Mandatory. The file path to the text file containing URLs, one per line.
@@ -17,10 +18,6 @@ Function Invoke-SiteKick {
     .PARAMETER Proxy
         Optional. Send requests through a specified proxy. 
         Example: -Proxy http://127.0.0.1:8080
-    
-    .PARAMETER CSV
-        Optional. Write the output to a CSV file. Will append if the filepath 
-        specified already exists.
         
     .PARAMETER Threads
         Optional. Specify number of threads to use. Default is 1.
