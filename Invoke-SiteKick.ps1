@@ -217,7 +217,7 @@ add-type @"
         }
     }
 
-    # combine the return value of each indivual job into the $Data variable
+    # combine the return value of each individual job into the $Data variable
     $Data = @()
     ForEach ($Job in $Jobs) {
         $SiteData = $Job.Job.EndInvoke($Job.Result)
