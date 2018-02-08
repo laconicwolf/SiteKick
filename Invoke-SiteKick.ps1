@@ -10,10 +10,10 @@ Function Invoke-SiteKick {
         Invoke-WebRequests to attempt to visit the each URL. Returns information 
         regarding any redirect, the site Title (if <title> tags are present), and 
         Server type (if the server header is present). For multiple hosts, 
-        I recommend using Export-Csv to save the data.  
+        I recommend piping to Export-Csv to save the data.  
          
     .PARAMETER UrlFile
-        Semi-ptional. The file path to the text file containing URLs, one per line.
+        Semi-optional. The file path to the text file containing URLs, one per line.
 
     .PARAMETER Url
         Semi-optional. The URL you would like to test.
