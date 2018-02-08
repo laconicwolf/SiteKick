@@ -70,10 +70,6 @@ Function Invoke-SiteKick {
 
         [Parameter(Mandatory = $false)]
         $Threads=1,
-        
-        [Parameter(Mandatory = $false)]
-        [switch]
-        $RandomAgent,
 
         [Parameter(Mandatory = $false)]
         [switch]
