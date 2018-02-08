@@ -1,4 +1,4 @@
-
+﻿
 Function Invoke-SiteKick {
     <#
     .SYNOPSIS
@@ -74,6 +74,8 @@ Function Invoke-SiteKick {
 
     Write-Host "`n[*] Loaded" $URLs.Length "URLs for testing`n"
 
+    $StartTime = Get-Date
+
     # script that each thread will run
     $ScriptBlock = {
         Param (
@@ -132,7 +134,7 @@ add-type @"
     # send request to url
     if ($Proxy) {
         Try {
-            $Response = Invoke-WebRequest -Uri $URL -UserAgent $UserAgent -Method Get -Proxy $Proxy
+            $Response = Invoke-WebRequest -Uri $URL -UserAgent $UserAgent -Method Get -Proxy $Proxy -TimeoutSec 2
         }
         Catch {
             if ($Info) {"[-] Unable to connect to $URL"}
@@ -141,7 +143,7 @@ add-type @"
     }
     else {
         Try {
-            $Response = Invoke-WebRequest -Uri $URL -UserAgent $UserAgent -Method Get
+            $Response = Invoke-WebRequest -Uri $URL -UserAgent $UserAgent -Method Get -TimeoutSec 2
         }
         Catch {
             if ($Info) {"[-] Unable to connect to $URL"}
@@ -231,4 +233,8 @@ add-type @"
     if ($CSV) {
         Write-Host "`n[+] File has been written to $CSV`n"
     }
+
+    $EndTime = Get-Date
+    $TotalSeconds = "{0:N4}" -f ($EndTime-$StartTime).TotalSeconds
+    Write-Host "`n[+] All URLs tested in $TotalSeconds seconds`n"
 }
