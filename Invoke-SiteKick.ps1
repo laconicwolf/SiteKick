@@ -80,8 +80,7 @@ Function Invoke-SiteKick {
     $ScriptBlock = {
         Param (
             $Url,
-            $Proxy,
-            $Info
+            $Proxy
         )
 
 # ignore HTTPS certificate warnings
@@ -129,26 +128,18 @@ add-type @"
     # sets a random user-agent
     $UserAgent = _Get-RandomAgent
 
-    if ($Info) {Write-Host "`n[*] Checking $URL"}
-
     # send request to url
     if ($Proxy) {
         Try {
             $Response = Invoke-WebRequest -Uri $URL -UserAgent $UserAgent -Method Get -Proxy $Proxy -TimeoutSec 2
         }
-        Catch {
-            if ($Info) {"[-] Unable to connect to $URL"}
-            continue
-        }
+        Catch {continue}
     }
     else {
         Try {
             $Response = Invoke-WebRequest -Uri $URL -UserAgent $UserAgent -Method Get -TimeoutSec 2
         }
-        Catch {
-            if ($Info) {"[-] Unable to connect to $URL"}
-            continue
-        }
+        Catch {continue}
     }
 
     # examine response to compare current url and requested url
@@ -182,7 +173,6 @@ add-type @"
                                     "Title" = $Title
                                     "Server" = $Server
                                     }
-    if ($Info) {$SiteData | Format-Table}
 
     return $SiteData
     }
@@ -195,11 +185,9 @@ add-type @"
     $Jobs = @()
 
     ForEach ($URL in $URLs) {
-        
+
         # maps the command line options to the scriptblock
         if ($Proxy -and -not $Info) {$Job = [powershell]::Create().AddScript($ScriptBlock).AddParameter("Url", $URL).AddParameter("Proxy", $Proxy)}
-        elseif ($Info -and -not $Proxy) {$Job = [powershell]::Create().AddScript($ScriptBlock).AddParameter("Url", $URL).AddParameter("Info", $Info)}
-        elseif ($Info -and $Proxy) {$Job = [powershell]::Create().AddScript($ScriptBlock).AddParameter("Url", $URL).AddParameter("Info", $Info).AddParameter("Proxy", $Proxy)}
         else {$Job = [powershell]::Create().AddScript($ScriptBlock).AddParameter("Url", $URL)}
         
         # starts a new job for each url
@@ -214,27 +202,28 @@ add-type @"
     # combine the return value of each indivual job into the $Data variable
     $Data = @()
     ForEach ($Job in $Jobs) {
-        $Data += $Job.Job.EndInvoke($Job.Result)
+        $SiteData = $Job.Job.EndInvoke($Job.Result)
+        $Data += $SiteData
+
+        if ($Info) {
+            if ($SiteData) {
+
+                # transform hashhtable data into string without column header
+                $SiteDataString = $SiteData | ForEach-Object {
+                     "[+] {0} {1} {2} {3}" -f $_.URL,$_.RedirectURL,$_.Title,$_.Server 
+                     }
+                Write-Host "$SiteDataString"
+            }
+            else {
+                Write-Host "[-] Site did not respond"
+            }
+        }
     }
     
     # display the returned data
     $Data
 
-    # parse to a csv if specified
-    if ($CSV) {
-        if (-not (Test-Path -Path $CSV) ) {
-            "url,redir,title,server,notes" | Out-File -FilePath $CSV -Encoding utf8
-        }
-        foreach($item in $Data) {
-            $item.URL + "," + $item.RedirectURL + "," + $item.Title + "," + $item.Server | Out-File -FilePath $CSV -Append -Encoding utf8
-        }
-    }
-
-    if ($CSV) {
-        Write-Host "`n[+] File has been written to $CSV`n"
-    }
-
     $EndTime = Get-Date
     $TotalSeconds = "{0:N4}" -f ($EndTime-$StartTime).TotalSeconds
-    Write-Host "`n[+] All URLs tested in $TotalSeconds seconds`n"
+    Write-Host "`n[+] All URLs tested in $TotalSeconds seconds"
 }
