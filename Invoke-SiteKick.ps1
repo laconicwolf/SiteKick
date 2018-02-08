@@ -29,7 +29,7 @@ Function Invoke-SiteKick {
         Optional. Increase output verbosity. 
 
     .EXAMPLE
-        PS C:\> Invoke-SiteKick -UrlFile .\urls.txt -Threads 10
+        PS C:\> Invoke-SiteKick -UrlFile .\urls.txt -Threads 5
         
         [*] Loaded 6 URLs for testing
 
