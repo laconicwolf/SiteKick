@@ -1,10 +1,8 @@
-﻿
-Function Invoke-SiteKick {
+﻿Function Invoke-SiteKick {
     <#
     .SYNOPSIS
         Tool for enumerating basic information from websites.
         Author: Jake Miller (@LaconicWolf)
-
     .DESCRIPTION
         Accepts a single URL or reads a text file of URLs (one per line) and uses 
         Invoke-WebRequests to attempt to visit the each URL. Returns information 
@@ -14,10 +12,8 @@ Function Invoke-SiteKick {
          
     .PARAMETER UrlFile
         Semi-optional. The file path to the text file containing URLs, one per line.
-
     .PARAMETER Url
         Semi-optional. The URL you would like to test.
-
     .PARAMETER Proxy
         Optional. Send requests through a specified proxy. 
         Example: -Proxy http://127.0.0.1:8080
@@ -27,33 +23,26 @@ Function Invoke-SiteKick {
         
     .PARAMETER Info
         Optional. Increase output verbosity. 
-
     .EXAMPLE
         PS C:\> Invoke-SiteKick -UrlFile .\urls.txt -Threads 5
         
         [*] Loaded 6 URLs for testing
-
         [*] All URLs tested in 1.0722 seconds
-
         Title                    URL                        Server   RedirectURL            
         -----                    ---                        ------   -----------            
         LAN                      http://192.168.0.1                                         
         LAN                      https://192.168.0.1/                                       
         LaconicWolf              http://www.laconicwolf.net AmazonS3 http://laconicwolf.net/
         Cisco - Global Home Page https://www.cisco.com/     Apache       
-
     .EXAMPLE  
         PS C:\> Invoke-SiteKick -UrlFile .\urls.txt -Info | Export-Csv -Path results.csv -NoTypeInformation
-
         [*] Loaded 6 URLs for testing
-
         [+] http://192.168.0.1  LAN 
         [-] Site did not respond
         [+] https://192.168.0.1/  LAN 
         [-] Site did not respond
         [+] http://www.laconicwolf.net http://laconicwolf.net/ LaconicWolf AmazonS3
         [+] https://www.cisco.com/  Cisco - Global Home Page Apache
-
         [*] All URLs tested in 2.5457 seconds
     #>
 
@@ -89,6 +78,60 @@ Function Invoke-SiteKick {
         }
     }
     else {$URLs = @($Url)}
+
+
+    Function Process-Urls {
+        Param(
+            [Parameter(Mandatory = $True)]
+                [array]$URLs
+        )
+
+        $HttpPortList = @('80', '280', '81', '591', '593', '2080', '2480', '3080', 
+                  '4080', '4567', '5080', '5104', '5800', '6080',
+                  '7001', '7080', '7777', '8000', '8008', '8042', '8080',
+                  '8081', '8082', '8088', '8180', '8222', '8280', '8281',
+                  '8530', '8887', '9000', '9080', '9090', '16080')                    
+        $HttpsPortList = @('832', '981', '1311', '7002', '7021', '7023', '7025',
+                   '7777', '8333', '8531', '8888')
+
+        $ProcessedUrls = @()
+        
+        foreach ($Url in $URLs) {
+            if ($Url.startswith('http')) {
+                if ($Url -match '\*') {
+                    $Url = $Url -replace '[*].',''
+                }
+                $ProcessedUrls += $Url
+                continue
+            }
+            if ($Url -match ':') {
+                $Port = $Url.split(':')[-1]
+                if ($Port -in $HttpPortList) {
+                    $ProcessedUrls += "http://$Url"
+                    continue
+                }
+                elseif ($Port -in $HttpsPortList) {
+                    $ProcessedUrls += "https://$Url"
+                    continue
+                }
+                else {
+                    $ProcessedUrls += "http://$Url"
+                    $ProcessedUrls += "https://$Url"
+                    continue
+                }
+            }
+            if ($Url -match '\*') {
+                $Url = $Url -replace '[*].',''
+                $ProcessedUrls += "http://$Url"
+                $ProcessedUrls += "https://$Url"
+                continue
+            }
+        }
+        return $ProcessedUrls
+    }
+
+
+    $URLs = Process-Urls -URLs $URLs
 
     Write-Host "`n[*] Loaded" $URLs.Length "URLs for testing`n"
 
