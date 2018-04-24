@@ -10,19 +10,22 @@ optional arguments:
 
   -h, --help            show this help message and exit
   -v, --verbose         increase output verbosity
-  -p, --print_all       display scan information to the screen
   -snt, --screenshot_no_title
-                        Takes a screenshot if no title is found.
+                        Takes a screenshot if no title is found
   -pr PROXY, --proxy PROXY
-                        specify a proxy to use (-pr 127.0.0.1:8080)
+                        Specify a proxy to use (-p 127.0.0.1:8080)
   -csv [CSV], --csv [CSV]
                         specify the name of a csv file to write to. If the
                         file already exists it will be appended
   -uf URL_FILE, --url_file URL_FILE
                         specify a file containing urls formatted
                         http(s)://addr:port.
+  -u URL, --url URL     specify a single url formatted http(s)://addr:port.
   -t [THREADS], --threads [THREADS]
-                        specify number of threads (default=1)
+                        Specify number of threads (default=5)
+  -to [TIMEOUT], --timeout [TIMEOUT]
+                        Specify number of seconds until a connection timeout
+                        (default=10)
 ```
                         
 
