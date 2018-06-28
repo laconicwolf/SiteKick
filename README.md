@@ -31,6 +31,3 @@ optional arguments:
 
 ### Scan a list of URLs and output to a CSV file
 `python3 sitekick.py -uf urls.txt -csv sitekick_scan.csv`
-
-### Scan a list of URLs thorgh a proxy and print the output to the terminal
-`python3 sitekick.py -uf urls.txt -p sitekick_scan.csv -pr 127.0.0.1:8080`
