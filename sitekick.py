@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 if not sys.version.startswith('3'):
     print('\n[-] This script will not work with Python2. Please use Python3. Quitting!')
