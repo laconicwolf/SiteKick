@@ -4,6 +4,14 @@ import sys
 if not sys.version.startswith('3'):
     print('\n[-] This script will not work with Python2. Please use Python3. Quitting!')
     exit()
+import argparse
+import re
+import os
+import time
+import random
+import threading
+import csv
+from queue import Queue
 try:
     import requests
     from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -16,14 +24,6 @@ except ImportError as error:
     print('[*] Missing module: {}'.format(missing_module))
     print('[*] Try running "pip install {}", or do an Internet search for installation instructions.'.format(missing_module.strip("'")))
     exit()
-import argparse
-import re
-import os
-import time
-import random
-import threading
-import csv
-from queue import Queue
 
 
 __author__ = 'Jake Miller (@LaconicWolf)'
@@ -33,8 +33,7 @@ __description__ = '''A multi-threaded web scanner that pulls title and server in
 
 
 def banner():
-    ''' Returns ascii art sourced from: http://patorjk.com/software/taag/
-    '''
+    """Returns ascii art sourced from: http://patorjk.com/software/taag/"""
     ascii_art = '''
   _________.__  __          ____  __.__        __    
  /   _____/|__|/  |_  ____ |    |/ _|__| ____ |  | __
@@ -47,8 +46,7 @@ def banner():
 
 
 def get_random_useragent():
-    ''' Returns a randomly chosen User-Agent string.
-    '''
+    """Returns a randomly chosen User-Agent string."""
     win_edge = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.246'
     win_firefox = 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/43.0'
     win_chrome = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36"
@@ -68,8 +66,8 @@ def get_random_useragent():
 
 
 def parse_to_csv(data, csv_name=None):
-    ''' Takes a list of lists and outputs to a csv file.
-    '''
+    """Takes a list of lists and outputs to a csv file.
+    """
     csv_name = 'results.csv' if not csv_name else csv_name
     if not os.path.isfile(csv_name):
         csv_file = open(csv_name, 'w', newline='')
@@ -91,9 +89,9 @@ def parse_to_csv(data, csv_name=None):
 
 
 def normalize_urls(urls):
-    ''' Accepts a list of urls and formats them so they will be accepted.
+    """Accepts a list of urls and formats them so they will be accepted.
     Returns a new list of the processed urls.
-    '''
+    """
     url_list = []
     http_port_list = ['80', '280', '81', '591', '593', '2080', '2480', '3080', 
                   '4080', '4567', '5080', '5104', '5800', '6080',
@@ -131,9 +129,9 @@ def normalize_urls(urls):
 
 
 def make_request(url):
-    ''' Builds a requests object, makes a request, and returns 
+    """Builds a requests object, makes a request, and returns 
     a response object.
-    '''
+    """
     s = requests.Session()
     user_agent = get_random_useragent()
     s.headers['User-Agent'] = user_agent
@@ -145,9 +143,9 @@ def make_request(url):
 
 
 def check_site_title(resp_obj, url):
-    ''' Parses the title from a response object. If the title returns empty,
+    """Parses the title from a response object. If the title returns empty,
     a silent selenium browser is used to gather the title.
-    '''
+    """
     title = re.findall(r'<title.*?>(.+?)</title>',resp_obj.text, re.IGNORECASE)
     if title == []:
         if args.verbose:
@@ -175,11 +173,11 @@ def check_site_title(resp_obj, url):
 
 
 def scanner_controller(url):
-    ''' Controls most of the logic for the script. Accepts a URL and calls 
+    """Controls most of the logic for the script. Accepts a URL and calls 
     various functions to make requests and prints output to the terminal.
-    Returns nothing, but adds data to the data variable, which can be used 
-    to print to a file. 
-    '''
+    Returns nothing, but adds data to the data variable, which will be used 
+    to print to a csv file. 
+    """
     global data
     request_data = []
     try:
@@ -211,8 +209,7 @@ def scanner_controller(url):
 
 
 def process_queue():
-    ''' processes the url queue and calls the scanner controller function
-    '''
+    """Processes the url queue and calls the scanner controller function"""
     while True:
         current_url = url_queue.get()
         scanner_controller(current_url)
@@ -220,8 +217,7 @@ def process_queue():
 
 
 def main():
-    ''' Normalizes the URLs and starts multithreading
-    '''
+    """Normalizes the URLs and starts multithreading"""
     processed_urls = normalize_urls(urls)
     
     for i in range(args.threads):
@@ -240,14 +236,34 @@ def main():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
-    parser.add_argument("-snt", "--screenshot_no_title", help="Takes a screenshot if no title is found", action="store_true")
-    parser.add_argument("-pr", "--proxy", help="Specify a proxy to use (-p 127.0.0.1:8080)")
-    parser.add_argument("-csv", "--csv", nargs='?', const='results.csv', help="specify the name of a csv file to write to. If the file already exists it will be appended")
-    parser.add_argument("-uf", "--url_file", help="specify a file containing urls formatted http(s)://addr:port.")
-    parser.add_argument("-u", "--url", help="specify a single url formatted http(s)://addr:port.")
-    parser.add_argument("-t", "--threads", nargs="?", type=int, default=5, help="Specify number of threads (default=5)")
-    parser.add_argument("-to", "--timeout", nargs="?", type=int, default=10, help="Specify number of seconds until a connection timeout (default=10)")
+    parser.add_argument("-v", "--verbose",
+                        help="increase output verbosity",
+                        action="store_true")
+    parser.add_argument("-snt", "--screenshot_no_title",
+                        help="Takes a screenshot if no title is found",
+                        action="store_true")
+    parser.add_argument("-pr", "--proxy", 
+                        help="Specify a proxy to use (-p 127.0.0.1:8080)")
+    parser.add_argument("-csv", "--csv",
+                        nargs='?',
+                        const='results.csv',
+                        default='results.csv',
+                        help="specify the name of a csv file to write to. If the file already exists it will be appended")
+    parser.add_argument("-uf", "--url_file",
+                        help="specify a file containing urls formatted http(s)://addr:port.")
+    parser.add_argument("-u", "--url",
+                        help="specify a single url formatted http(s)://addr:port.")
+    parser.add_argument("-t", "--threads",
+                        nargs="?",
+                        type=int,
+                        const=30,
+                        default=30,
+                        help="Specify number of threads (default=30)")
+    parser.add_argument("-to", "--timeout",
+                        nargs="?", 
+                        type=int, 
+                        default=10, 
+                        help="Specify number of seconds until a connection timeout (default=10)")
     args = parser.parse_args()
 
     if not args.url and not args.url_file:
