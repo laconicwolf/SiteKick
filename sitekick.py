@@ -248,7 +248,7 @@ def ssh_connect(hostname, username, password, port=22):
             with lock:
                 print('[-] An unknown error occurred on {}:{} with {} : {}\nError: {}'.format(
                     hostname, port, username, password, e))
-        return "Unknown Error", e
+        return "Unknown Error"
 
 
 def map_title_to_ssh_creds(url, title, server):
