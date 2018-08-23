@@ -3,7 +3,7 @@
 
 __author__ = 'Jake Miller (@LaconicWolf)'
 __date__ = '20180425'
-__version__ = '0.02'
+__version__ = '0.01'
 __description__ = '''A multi-threaded web scanner that pulls title and server information'''
 
 
@@ -119,13 +119,13 @@ def normalize_urls(urls):
     """Accepts a list of urls and formats them so they will be accepted.
     Returns a new list of the processed urls.
     """
-    urlList = []
-    httpPortList = ['80', '280', '81', '591', '593', '2080', '2480', '3080', 
+    url_list = []
+    http_port_list = ['80', '280', '81', '591', '593', '2080', '2480', '3080', 
                   '4080', '4567', '5080', '5104', '5800', '6080',
                   '7001', '7080', '7777', '8000', '8008', '8042', '8080',
                   '8081', '8082', '8088', '8180', '8222', '8280', '8281',
                   '8530', '8887', '9000', '9080', '9090', '16080']                    
-    httpsPortList = ['832', '981', '1311', '7002', '7021', '7023', '7025',
+    https_port_list = ['832', '981', '1311', '7002', '7021', '7023', '7025',
                    '7777', '8333', '8531', '8888']
     for url in urls:
         if '*.' in url:
@@ -133,37 +133,37 @@ def normalize_urls(urls):
         if not url.startswith('http'):
             if ':' in url:
                 port = url.split(':')[-1]
-                if port in httpPortList:
-                    urlList.append('http://' + url)
-                elif port in httpsPortList or port.endswith('43'):
-                    urlList.append('https://' + url)
+                if port in http_port_list:
+                    url_list.append('http://' + url)
+                elif port in https_port_list or port.endswith('43'):
+                    url_list.append('https://' + url)
                 else:
                     url = url.strip()
                     url = url.strip('/')
-                    urlList.append('http://' + url + ':80')
-                    urlList.append('https://' + url + ':443')
+                    url_list.append('http://' + url + ':80')
+                    url_list.append('https://' + url + ':443')
                     continue
             else:
                     url = url.strip()
                     url = url.strip('/')
-                    urlList.append('http://' + url + ':80')
-                    urlList.append('https://' + url + ':443')
+                    url_list.append('http://' + url + ':80')
+                    url_list.append('https://' + url + ':443')
                     continue
         if len(url.split(':')) != 3:
             if url[0:5] != 'https':    
                 url = url.strip()
                 url = url.strip('/')
-                urlList.append(url + ':80')
+                url_list.append(url + ':80')
                 continue
             elif url[0:5] == 'https':
                 url = url.strip()
                 url = url.strip('/')
-                urlList.append(url + ':443')
+                url_list.append(url + ':443')
                 continue
         url = url.strip()
         url = url.strip('/')
-        urlList.append(url)
-    return urlList
+        url_list.append(url)
+    return url_list
 
 
 def make_request(url):
