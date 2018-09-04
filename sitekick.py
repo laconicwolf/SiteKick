@@ -19,11 +19,11 @@ import csv
 # Fixes Python3 to Python2 backwards compatability
 try:
     import queue
-except ImportError:
+except:
     import Queue as queue
 try:
     from urlparse import urlparse
-except ModuleNotFoundError:
+except:
     from urllib.parse import urlparse
 
 # Third party modules
